@@ -32,6 +32,12 @@ def sandbox_python(code):
 
     stop_and_destroy()
 
+    # Ignore first 5 lines of errors
+    with open(ERROR_FILE, 'r') as error_file:
+        data = error_file.read().splitlines(True)
+    with open(ERROR_FILE, 'w') as error_file:
+        error_file.writelines(data[5:])
+
     with open(OUTPUT_FILE, 'r') as output_file, open(ERROR_FILE, 'r') as error_file:
         results = {'output': output_file.read(), 'errors': error_file.read()}
     return results
