@@ -3,7 +3,7 @@ import config
 import discord
 import re
 from discord.ext import commands
-from sandbox import sandbox_python
+from sandbox import sandbox_python, prepare_lxc
 
 bot = commands.Bot(command_prefix='$')
 
@@ -16,9 +16,10 @@ async def py(ctx):
     code = args[args.find(start)+len(start):args.rfind(end)]
     def run_code():
         exec(code)
-
-    await ctx.send(sandbox_python(code))
-
-
+    results = sandbox_python(code)
+    await ctx.send('Output: ```' + results['output'] + '\n```')
+    if results['errors']:
+        await ctx.send('Errors: ```' + results['errors'] + '\n```')
+    prepare_lxc()
 
 bot.run(config.token)
