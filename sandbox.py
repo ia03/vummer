@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import lxc
 import sys
+from threading import Timer
 
 CONTAINER_NAME = 'apicontainer'
 OUTPUT_FILE = 'user_code.out'
@@ -20,6 +21,9 @@ def sandbox_python(code):
     print("Container state: %s" % c.state)
     print("Container PID: %s" % c.init_pid)
     c.set_config_item('lxc.prlimit.cpu', '1')
+
+    timer = Timer(1, stop_and_destroy)
+    timer.start()
 
     with open(OUTPUT_FILE, 'w') as output_file, open(ERROR_FILE, 'w') as error_file:
         c.attach_wait(user_code, stdout=output_file, stderr=error_file)
