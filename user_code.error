@@ -1,5 +1,0 @@
-Exception ignored in: <function _after_at_fork_child_reinit_locks at 0x7fecc6c9ab80>
-Traceback (most recent call last):
-  File "/usr/lib/python3.8/logging/__init__.py", line 260, in _after_at_fork_child_reinit_locks
-  File "/usr/lib/python3.8/logging/__init__.py", line 228, in _releaseLock
-RuntimeError: cannot release un-acquired lock
