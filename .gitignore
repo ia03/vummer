@@ -104,3 +104,4 @@ dist
 .tern-port
 
 config.py
+user_code.out
