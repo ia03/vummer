@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import lxc
 import sys
-from threading import Timer
+from time_limit import time_limit, TimeoutException
 
 CONTAINER_NAME = 'apicontainer'
 OUTPUT_FILE = 'user_code.out'
 ERROR_FILE = 'user_code.error'
+
 
 def sandbox_python(code):
     def user_code():
@@ -22,11 +23,12 @@ def sandbox_python(code):
     print("Container PID: %s" % c.init_pid)
     c.set_config_item('lxc.prlimit.cpu', '1')
 
-    timer = Timer(1, stop_and_destroy)
-    timer.start()
-
-    with open(OUTPUT_FILE, 'w') as output_file, open(ERROR_FILE, 'w') as error_file:
-        c.attach_wait(user_code, stdout=output_file, stderr=error_file)
+    try:
+        with time_limit(2):
+            with open(OUTPUT_FILE, 'w') as output_file, open(ERROR_FILE, 'w') as error_file:
+                c.attach_wait(user_code, stdout=output_file, stderr=error_file)
+    except TimeoutException as e:
+        return {'output': '', 'errors': 'Program timed out.'}
 
     stop_and_destroy()
 

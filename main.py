@@ -24,8 +24,6 @@ async def py(ctx):
     end = '```'
     code = args[args.find(start)+len(start):args.rfind(end)]
     print('Running code: ', code)
-    def run_code():
-        exec(code)
     results = sandbox_python(code)
     await ctx.send('Output: ```' + results['output'] + '\n```')
     if results['errors'] != '' and IGNORED_ERROR not in results['errors']:
