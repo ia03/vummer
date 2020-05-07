@@ -1,4 +1,4 @@
 __pycache__/
 config.py
-user_code.out
-user_code.error
+*.out
+*.error

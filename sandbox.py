@@ -1,51 +1,41 @@
 #!/usr/bin/env python
 import lxc
 import sys
+import os
 from time_limit import time_limit, TimeoutException
 
-CONTAINER_NAME = 'apicontainer'
-OUTPUT_FILE = 'user_code.out'
-ERROR_FILE = 'user_code.error'
 
-
-def sandbox_python(code):
+def sandbox_python(code, container_name):
+    output_filename = get_output_filename(container_name)
+    error_filename = get_error_filename(container_name)
     def user_code():
         exec(code)
 
     # Setup the container object
-    c = lxc.Container(CONTAINER_NAME)
-    if not c.defined:
-        prepare_lxc()
-        c = lxc.Container(CONTAINER_NAME)
+    prepare_lxc(container_name)
+    c = lxc.Container(container_name)
+    print_state(container_name)
 
-    # Query some information
-    print("Container state: %s" % c.state)
-    print("Container PID: %s" % c.init_pid)
-    c.set_config_item('lxc.prlimit.cpu', '1')
-
+    # Run the code in the container
     try:
         with time_limit(2):
-            with open(OUTPUT_FILE, 'w') as output_file, open(ERROR_FILE, 'w') as error_file:
+            with open(output_filename, 'w') as output_file, open(error_filename, 'w') as error_file:
                 c.attach_wait(user_code, stdout=output_file, stderr=error_file)
     except TimeoutException as e:
         return {'output': '', 'errors': 'Program timed out.'}
 
-    stop_and_destroy()
-
     # Ignore first 5 lines of errors
-    with open(ERROR_FILE, 'r') as error_file:
+    with open(error_filename, 'r') as error_file:
         data = error_file.read().splitlines(True)
-    with open(ERROR_FILE, 'w') as error_file:
+    with open(error_filename, 'w') as error_file:
         error_file.writelines(data[5:])
 
-    with open(OUTPUT_FILE, 'r') as output_file, open(ERROR_FILE, 'r') as error_file:
+    with open(output_filename, 'r') as output_file, open(error_filename, 'r') as error_file:
         results = {'output': output_file.read(), 'errors': error_file.read()}
     return results
 
-def prepare_lxc():
-    stop_and_destroy()
-
-    c = lxc.Container(CONTAINER_NAME)
+def prepare_lxc(container_name):
+    c = lxc.Container(container_name)
 
     # Create the container rootfs
     if not c.create("download", lxc.LXC_CREATE_QUIET, {"dist": "alpine",
@@ -60,9 +50,11 @@ def prepare_lxc():
         return
     c.set_config_item('lxc.ephemeral', '1')
     c.set_config_item('lxc.prlimit.as', '128000000')
+    c.set_config_item('lxc.prlimit.cpu', '1')
 
-def stop_and_destroy():
-    c = lxc.Container(CONTAINER_NAME)
+def stop_and_destroy(container_name):
+    c = lxc.Container(container_name)
+
     if c.defined:
         # Stop the container
         if not c.stop():
@@ -73,3 +65,17 @@ def stop_and_destroy():
         if not c.destroy():
             print("Failed to destroy the container.", file=sys.stderr)
             return
+    os.remove(get_output_filename(container_name))
+    os.remove(get_error_filename(container_name))
+
+def print_state(container_name):
+    c = lxc.Container(container_name)
+    # Query some information
+    print("Container state: %s" % c.state)
+    print("Container PID: %s" % c.init_pid)
+
+def get_output_filename(container_name):
+    return container_name + '.out'
+
+def get_error_filename(container_name):
+    return container_name + '.error'
