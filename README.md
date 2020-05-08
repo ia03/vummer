@@ -23,7 +23,9 @@ You need LXC installed and configured to support unprivileged LXC containers.
 ## Configuration
 
 Create a new file `config.py` with the token variable set to that of your bot.
-'token=\'TOKEN HERE\''
+```
+token='TOKEN HERE'
+```
 
 ## Start
 
