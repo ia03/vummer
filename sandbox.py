@@ -29,8 +29,8 @@ def sandbox_python(code, container_name, input_data):
             with open(output_filename, 'w') as output_file, \
                 open(error_filename, 'w') as error_file, \
                 open(input_filename, 'r+') as input_file:
-                c.attach_wait(user_code, stdout=output_file, stderr=error_file,
-                    stdin=input_file)
+                c.attach_wait(lxc.attach_run_command, ['python3', '-c', code]
+                    stdout=output_file, stderr=error_file, stdin=input_file)
     except TimeoutException as e:
         return {'output': '', 'errors': 'Program timed out.'}
 
@@ -48,8 +48,8 @@ def prepare_lxc(container_name):
     c = lxc.Container(container_name)
 
     # Create the container rootfs
-    if not c.create("download", lxc.LXC_CREATE_QUIET, {"dist": "alpine",
-                                                       "release": "3.10",
+    if not c.create("download", lxc.LXC_CREATE_QUIET, {"dist": "ubuntu",
+                                                       "release": "trusty",
                                                        "arch": "amd64"}):
         print("Failed to create the container rootfs", file=sys.stderr)
         return
