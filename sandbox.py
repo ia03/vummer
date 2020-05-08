@@ -4,6 +4,7 @@ import sys
 import os
 from time_limit import time_limit, TimeoutException
 from utils import time_limit_lxc
+from threading import Thread
 
 base = lxc.Container('base')
 
@@ -25,7 +26,8 @@ def sandbox_python(code, container_name, input_data):
 
     # Run the code in the container
 
-    time_limit_lxc(container_name, 2)
+    time_limit_thread = Thread(target=time_limit_lxc, args=(container_name, 2))
+    time_limit_thread.start()
     with open(output_filename, 'w') as output_file, \
         open(error_filename, 'w') as error_file, \
         open(input_filename, 'r+') as input_file:
