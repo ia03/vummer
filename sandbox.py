@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import lxc
 import sys
 import os
@@ -58,7 +57,7 @@ def stop_and_destroy(container_name):
         # Stop the container
         if not c.stop():
             print("Failed to kill the container", file=sys.stderr)
-            
+
     os.remove(get_output_filename(container_name))
     os.remove(get_error_filename(container_name))
     os.remove(get_input_filename(container_name))

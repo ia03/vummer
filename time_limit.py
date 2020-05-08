@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import signal
 from contextlib import contextmanager
 
