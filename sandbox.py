@@ -50,7 +50,8 @@ def prepare_lxc(container_name):
         flags=lxc.LXC_CLONE_SNAPSHOT)
 
     if not c.defined:
-
+        print('Critical error: container not defined')
+        return
     # Start the container
     if not c.start():
         print("Failed to start the container", file=sys.stderr)
