@@ -7,6 +7,7 @@ from sandbox import sandbox_python, stop_and_destroy, setup_base
 from multiprocessing import Process, Queue
 import asyncio
 from utils import search_between
+import sys
 
 bot = commands.Bot(command_prefix='$')
 print_queue = Queue()
@@ -76,6 +77,7 @@ async def check_print_queue():
             await bot.get_channel(channel_id).send(message)
         except:
             pass
+    sys.exit()  # The program should end if the loop ends.
 setup_base()
 bot.loop.create_task(check_print_queue())
 bot.run(config.token)
