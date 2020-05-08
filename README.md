@@ -7,7 +7,9 @@ creates an LXC container in which the code is run.
 
 Dependencies are located in `requirements.txt`
 
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 [python3-lxc](https://github.com/lxc/python3-lxc) is also needed.
 
@@ -26,4 +28,6 @@ Create a new file `config.py` with the token variable set to that of your bot.
 ## Start
 
 Run `main.py`
-`python3 main.py`
+```
+python3 main.py
+```
