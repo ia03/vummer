@@ -4,6 +4,7 @@ import sys
 import os
 from time_limit import time_limit, TimeoutException
 
+base = lxc.Container('base')
 
 def sandbox_python(code, container_name, input_data):
     output_filename = get_output_filename(container_name)
@@ -45,22 +46,7 @@ def sandbox_python(code, container_name, input_data):
     return results
 
 def prepare_lxc(container_name):
-    c = lxc.Container(container_name)
-
-    # Create the container rootfs
-    if not c.create("download", lxc.LXC_CREATE_QUIET, {"dist": "ubuntu",
-                                                       "release": "trusty",
-                                                       "arch": "amd64"}):
-        print("Failed to create the container rootfs", file=sys.stderr)
-        return
-
-    # Start the container
-    if not c.start():
-        print("Failed to start the container", file=sys.stderr)
-        return
-    c.set_config_item('lxc.ephemeral', '1')
-    c.set_config_item('lxc.prlimit.as', '128000000')
-    c.set_config_item('lxc.prlimit.cpu', '1')
+    c = base.clone(container_name)
 
 def stop_and_destroy(container_name):
     c = lxc.Container(container_name)
@@ -78,6 +64,22 @@ def stop_and_destroy(container_name):
     os.remove(get_output_filename(container_name))
     os.remove(get_error_filename(container_name))
     os.remove(get_input_filename(container_name))
+
+def setup_base():
+    # Create the container rootfs
+    if not base.create("download", lxc.LXC_CREATE_QUIET, {"dist": "ubuntu",
+                                                       "release": "trusty",
+                                                       "arch": "amd64"}):
+        print("Failed to create the container rootfs", file=sys.stderr)
+        return
+
+    # Start the container
+    if not base.start():
+        print("Failed to start the container", file=sys.stderr)
+        return
+    base.set_config_item('lxc.ephemeral', '1')
+    base.set_config_item('lxc.prlimit.as', '128000000')
+
 
 def print_state(container_name):
     c = lxc.Container(container_name)
