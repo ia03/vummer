@@ -46,7 +46,10 @@ def sandbox_python(code, container_name, input_data):
     return results
 
 def prepare_lxc(container_name):
-    c = base.clone(container_name)
+    c = base.clone(container_name, bdevtype="overlayfs",
+        flags=lxc.LXC_CLONE_SNAPSHOT)
+
+    if not c.defined:
 
     # Start the container
     if not c.start():
