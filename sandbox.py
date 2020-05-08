@@ -81,7 +81,8 @@ def setup_base():
 
 
     base.set_config_item('lxc.ephemeral', '1')
-    base.set_config_item('lxc.prlimit.as', '128000000')
+    base.set_config_item('lxc.cgroup.memory.limit_in_bytes', '128M')
+    base.set_config_item('lxc.cgroup.memory.memsw.limit_in_bytes', '128M')
 
 def print_state(container_name):
     c = lxc.Container(container_name)
