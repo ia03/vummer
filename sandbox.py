@@ -48,6 +48,11 @@ def sandbox_python(code, container_name, input_data):
 def prepare_lxc(container_name):
     c = base.clone(container_name)
 
+    # Start the container
+    if not c.start():
+        print("Failed to start the container", file=sys.stderr)
+        return
+
 def stop_and_destroy(container_name):
     c = lxc.Container(container_name)
 
@@ -73,10 +78,7 @@ def setup_base():
         print("Failed to create the container rootfs", file=sys.stderr)
         return
 
-    # Start the container
-    if not base.start():
-        print("Failed to start the container", file=sys.stderr)
-        return
+
     base.set_config_item('lxc.ephemeral', '1')
     base.set_config_item('lxc.prlimit.as', '128000000')
 
