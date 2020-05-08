@@ -31,7 +31,11 @@ def py_process(args, message_id, channel_id, input_data, print_queue):
     print('Running code: ', code)
 
     results = sandbox_python(code, message_id, input_data)
-    print_queue.put((channel_id, 'Output: ```\n' + results['output'] + '\n```'))
+    if results['output']:
+        print_queue.put((channel_id, 'Output: ```\n' + results['output']
+            + '\n```'))
+    else:
+        print_queue.put((channel_id, 'No output sent.'))
     if results['errors'] != '':
         print_queue.put((channel_id,
             'Errors: ```\n' + results['errors'] + '\n```'))
