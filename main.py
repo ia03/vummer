@@ -2,12 +2,10 @@
 import config
 import discord
 import re
-from discord.ext import commands
+from discord.ext import commands, tasks
 from sandbox import sandbox_python, stop_and_destroy, setup_base
 from multiprocessing import Process, Queue
-import asyncio
 from utils import search_between
-import sys
 
 bot = commands.Bot(command_prefix='$')
 print_queue = Queue()
@@ -64,29 +62,26 @@ async def input(ctx):
     inputs[str(ctx.message.author.id)] = data
     await ctx.send('Input set.')
 
+@tasks.loop(seconds=0.05)
 async def check_print_queue():
-    while True:
-        await asyncio.sleep(0.05)
-        try:
-            data = print_queue.get(False)
-        except:
-            continue
-        channel_id = data[0]
-        message = data[1]
-        print('New message to channel', str(channel_id) + ':', str(message))
-        if len(message) > 2000:
-            await bot.get_channel(channel_id).send(
-            '[This message is too large.]')
-            continue
-        try:
-            await bot.get_channel(channel_id).send(message)
-        except:
-            pass
-    sys.exit()  # The program should end if the loop ends.
+    try:
+        data = print_queue.get(False)
+    except:
+        return
+    channel_id = data[0]
+    message = data[1]
+    print('New message to channel', str(channel_id) + ':', str(message))
+    if len(message) > 2000:
+        await bot.get_channel(channel_id).send(
+        '[This message is too large.]')
+        return
+    try:
+        await bot.get_channel(channel_id).send(message)
+    except:
+        pass
 
 def main():
     setup_base()
-    bot.loop.create_task(check_print_queue())
     bot.run(config.token)
 
 if __name__ == '__main__':
