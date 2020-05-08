@@ -3,6 +3,7 @@ import lxc
 import sys
 import os
 from time_limit import time_limit, TimeoutException
+from utils import time_limit_lxc
 
 base = lxc.Container('base')
 
@@ -23,15 +24,13 @@ def sandbox_python(code, container_name, input_data):
         print('Wrote input:', input_data)
 
     # Run the code in the container
-    try:
-        with time_limit(2):
-            with open(output_filename, 'w') as output_file, \
-                open(error_filename, 'w') as error_file, \
-                open(input_filename, 'r+') as input_file:
-                c.attach_wait(lxc.attach_run_command, ['python3', '-c', code],
-                    stdout=output_file, stderr=error_file, stdin=input_file)
-    except TimeoutException as e:
-        return {'output': '', 'errors': 'Program timed out.'}
+
+    time_limit_lxc(container_name, 2)
+    with open(output_filename, 'w') as output_file, \
+        open(error_filename, 'w') as error_file, \
+        open(input_filename, 'r+') as input_file:
+        c.attach_wait(lxc.attach_run_command, ['python3', '-c', code],
+            stdout=output_file, stderr=error_file, stdin=input_file)
 
     # Ignore first 5 lines of errors
     with open(error_filename, 'r') as error_file:
