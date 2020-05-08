@@ -62,8 +62,8 @@ async def input(ctx):
     else:
         data = args
     inputs[str(ctx.message.author.id)] = data
-    print('Input set.')
-    send_message(ctx.message.channel.id, 'Input set.')
+    message = 'Input set: ```\n' + data + '\n```'
+    send_message(ctx.message.channel.id, message)
 
 @tasks.loop(seconds=0.05)
 async def check_print_queue():
