@@ -64,10 +64,6 @@ def stop_and_destroy(container_name):
             print("Failed to kill the container", file=sys.stderr)
             return
 
-        # Destroy the container
-        if not c.destroy():
-            print("Failed to destroy the container.", file=sys.stderr)
-            return
     os.remove(get_output_filename(container_name))
     os.remove(get_error_filename(container_name))
     os.remove(get_input_filename(container_name))
@@ -86,7 +82,6 @@ def setup_base():
 
     base.set_config_item('lxc.ephemeral', '1')
     base.set_config_item('lxc.prlimit.as', '128000000')
-    print('Base container created')
 
 def print_state(container_name):
     c = lxc.Container(container_name)
