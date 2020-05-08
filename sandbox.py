@@ -84,7 +84,7 @@ def setup_base():
 
     base.set_config_item('lxc.ephemeral', '1')
     base.set_config_item('lxc.prlimit.as', '128000000')
-
+    print('Base container created')
 
 def print_state(container_name):
     c = lxc.Container(container_name)
