@@ -34,7 +34,7 @@ def py_process(args, message_id, channel_id, input_data, print_queue):
     print_queue.put((channel_id, 'Output: ```\n' + results['output'] + '\n```'))
     if results['errors'] != '':
         print_queue.put((channel_id,
-            'Errors: ```' + results['errors'] + '\n```'))
+            'Errors: ```\n' + results['errors'] + '\n```'))
     stop_and_destroy(message_id)
 
 @bot.command()
