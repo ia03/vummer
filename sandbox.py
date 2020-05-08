@@ -35,6 +35,11 @@ def sandbox_python(code, container_name, input_data):
             stdout=output_file, stderr=error_file, stdin=input_file)
     if not c.running:
         return {'output': '', 'errors': '[Timeout error.]'}
+    # Ignore first 5 lines of errors
+    with open(error_filename, 'r') as error_file:
+        data = error_file.read().splitlines(True)
+    with open(error_filename, 'w') as error_file:
+        error_file.writelines(data[5:])
 
     with open(output_filename, 'r') as output_file, open(error_filename, 'r') as error_file:
         results = {'output': output_file.read(), 'errors': error_file.read()}
