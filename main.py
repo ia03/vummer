@@ -62,8 +62,9 @@ async def input(ctx):
     inputs[str(ctx.message.author.id)] = data
     await ctx.send('Input set.')
 
-@tasks.loop(seconds=0.05, loop=bot.loop)
+@tasks.loop(seconds=0.05)
 async def check_print_queue():
+    print('t')
     try:
         data = print_queue.get(False)
     except:
@@ -82,6 +83,7 @@ async def check_print_queue():
 
 def main():
     setup_base()
+    check_print_queue.start()
     bot.run(config.token)
 
 if __name__ == '__main__':
