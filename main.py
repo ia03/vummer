@@ -84,9 +84,9 @@ async def check_print_queue():
             pass
     sys.exit()  # The program should end if the loop ends.
 
-async def main():
+def main():
     setup_base()
-    await check_print_queue()
+    bot.loop.create_task(check_print_queue())
     bot.run(config.token)
 
 if __name__ == '__main__':
