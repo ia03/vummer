@@ -33,7 +33,8 @@ def sandbox_python(code, container_name, input_data):
         open(input_filename, 'r+') as input_file:
         c.attach_wait(lxc.attach_run_command, ['python3', '-c', code],
             stdout=output_file, stderr=error_file, stdin=input_file)
-
+    if not c.running:
+        return {'output': '', 'errors': '[Timeout error.]'}
     # Ignore first 5 lines of errors
     with open(error_filename, 'r') as error_file:
         data = error_file.read().splitlines(True)
