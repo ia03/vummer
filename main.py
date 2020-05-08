@@ -62,7 +62,7 @@ async def input(ctx):
     else:
         data = args
     inputs[str(ctx.message.author.id)] = data
-
+    print('Input set.')
     send_message(ctx.message.channel.id, 'Input set.')
 
 @tasks.loop(seconds=0.05)
