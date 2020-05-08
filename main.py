@@ -3,7 +3,7 @@ import config
 import discord
 import re
 from discord.ext import commands
-from sandbox import sandbox_python, stop_and_destroy
+from sandbox import sandbox_python, stop_and_destroy, setup_base
 from multiprocessing import Process, Queue
 import asyncio
 from utils import search_between
@@ -75,5 +75,6 @@ async def check_print_queue():
             await bot.get_channel(channel_id).send(message)
         except:
             pass
+setup_base()
 bot.loop.create_task(check_print_queue())
 bot.run(config.token)
