@@ -15,11 +15,13 @@ async def on_ready():
     print('Bot is ready.')
 
 
-def py_process(message_content, message_id, channel_id, print_queue):
-    args = message_content
-    start = '```py'
-    end = '```'
-    code = args[args.find(start)+len(start):args.rfind(end)]
+def py_process(args, message_id, channel_id, print_queue):
+    if '```py' in message_content:
+        code = search_between(args, '```py', '```')
+    elif '```' in message_content:
+        code = search_between(args, '```', '```')
+    else:
+        code = message_content
     print('Running code: ', code)
 
     results = sandbox_python(code, message_id)
@@ -31,9 +33,10 @@ def py_process(message_content, message_id, channel_id, print_queue):
 
 @bot.command()
 async def py(ctx):
-    process = Process(target=py_process, args=(ctx.message.content[3:],
+    process = Process(target=py_process, args=(ctx.message.content[4:],
         str(ctx.message.id), ctx.message.channel.id, print_queue))
     process.start()
+
 
 async def check_print_queue():
     while True:
