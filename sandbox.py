@@ -5,9 +5,10 @@ import os
 from time_limit import time_limit, TimeoutException
 
 
-def sandbox_python(code, container_name):
+def sandbox_python(code, container_name, input_data):
     output_filename = get_output_filename(container_name)
     error_filename = get_error_filename(container_name)
+    input_filename = get_input_filename(container_name)
     def user_code():
         exec(code)
 
@@ -16,11 +17,20 @@ def sandbox_python(code, container_name):
     c = lxc.Container(container_name)
     print_state(container_name)
 
+    with open(input_filename, 'w') as input_file:
+        input_file.write(input_data)
+        print('Wrote input:', input_data)
+    with open(input_filename) as input_file:
+        print('file has:', input_file.read())
+
     # Run the code in the container
     try:
         with time_limit(2):
-            with open(output_filename, 'w') as output_file, open(error_filename, 'w') as error_file:
-                c.attach_wait(user_code, stdout=output_file, stderr=error_file)
+            with open(output_filename, 'w') as output_file, \
+                open(error_filename, 'w') as error_file, \
+                open(input_filename, 'r+') as input_file:
+                c.attach_wait(user_code, stdout=output_file, stderr=error_file,
+                    stdin=input_file)
     except TimeoutException as e:
         return {'output': '', 'errors': 'Program timed out.'}
 
@@ -67,6 +77,7 @@ def stop_and_destroy(container_name):
             return
     os.remove(get_output_filename(container_name))
     os.remove(get_error_filename(container_name))
+    os.remove(get_input_filename(container_name))
 
 def print_state(container_name):
     c = lxc.Container(container_name)
@@ -75,7 +86,10 @@ def print_state(container_name):
     print("Container PID: %s" % c.init_pid)
 
 def get_output_filename(container_name):
-    return container_name + '.out'
+    return 'io/' + container_name + '.out'
 
 def get_error_filename(container_name):
-    return container_name + '.error'
+    return 'io/' + container_name + '.error'
+
+def get_input_filename(container_name):
+    return 'io/' + container_name + '.in'
