@@ -62,7 +62,7 @@ async def input(ctx):
     inputs[str(ctx.message.author.id)] = data
     await ctx.send('Input set.')
 
-@tasks.loop(seconds=0.05)
+@tasks.loop(seconds=0.05, loop=bot.loop)
 async def check_print_queue():
     try:
         data = print_queue.get(False)
