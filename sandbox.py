@@ -18,12 +18,6 @@ def sandbox_python(code, container_name, input_data):
     c = lxc.Container(container_name)
     print_state(container_name)
 
-    with open(input_filename, 'w') as input_file:
-        input_file.write(input_data)
-        print('Wrote input:', input_data)
-    with open(input_filename) as input_file:
-        print('file has:', input_file.read())
-
     # Run the code in the container
     try:
         with time_limit(2):

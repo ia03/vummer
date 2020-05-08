@@ -50,6 +50,7 @@ async def py(ctx):
 @bot.command()
 async def input(ctx):
     args = ctx.message.content[7:]
+    print('Setting input:', args)
     if '```' in args:
         data = search_between(args, '```', '```')
     else:
