@@ -35,11 +35,8 @@ def sandbox_python(code, container_name, input_data):
             stdout=output_file, stderr=error_file, stdin=input_file)
     if not c.running:
         return {'output': '', 'errors': '[Timeout error.]'}
-    # Ignore first 5 lines of errors
-    with open(error_filename, 'r') as error_file:
-        data = error_file.read().splitlines(True)
-    with open(error_filename, 'w') as error_file:
-        error_file.writelines(data[5:])
+
+    ignore_first_error(error_filename)
 
     with open(output_filename, 'r') as output_file, open(error_filename, 'r') as error_file:
         results = {'output': output_file.read(), 'errors': error_file.read()}
@@ -53,7 +50,6 @@ def prepare_lxc(container_name):
     # Start the container
     if not c.start():
         print("Failed to start the container", file=sys.stderr)
-        return
 
 def stop_and_destroy(container_name):
     c = lxc.Container(container_name)
@@ -62,8 +58,7 @@ def stop_and_destroy(container_name):
         # Stop the container
         if not c.stop():
             print("Failed to kill the container", file=sys.stderr)
-            return
-
+            
     os.remove(get_output_filename(container_name))
     os.remove(get_error_filename(container_name))
     os.remove(get_input_filename(container_name))
@@ -96,3 +91,10 @@ def get_error_filename(container_name):
 
 def get_input_filename(container_name):
     return 'io/' + container_name + '.in'
+
+def ignore_first_error(error_filename):
+    # Ignore first 5 lines of errors
+    with open(error_filename, 'r') as error_file:
+        data = error_file.read().splitlines(True)
+    with open(error_filename, 'w') as error_file:
+        error_file.writelines(data[5:])
