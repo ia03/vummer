@@ -13,7 +13,8 @@ pip install -r requirements.txt
 
 [python3-lxc](https://github.com/lxc/python3-lxc) is also needed.
 
-```git clone https://github.com/lxc/python3-lxc.git
+```
+git clone https://github.com/lxc/python3-lxc.git
 cd python3-lxc
 pip install .
 ```
