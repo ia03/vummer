@@ -40,6 +40,7 @@ def py_process(args, message_id, channel_id, input_data, print_queue):
         print_queue.put((channel_id,
             'Errors: ```\n' + results['errors'] + '\n```'))
     stop_and_destroy(message_id)
+    print('Container destroyed. Ending process.')
 
 @bot.command()
 async def py(ctx):
