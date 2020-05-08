@@ -64,7 +64,6 @@ async def input(ctx):
 
 @tasks.loop(seconds=0.05)
 async def check_print_queue():
-    print('t')
     try:
         data = print_queue.get(False)
     except:
