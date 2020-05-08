@@ -67,7 +67,7 @@ async def check_print_queue():
             continue
         channel_id = data[0]
         message = data[1]
-        print('New message to channel', str(channel_id) + ':', str(data))
+        print('New message to channel', str(channel_id) + ':', str(message))
         if len(message) > 2000:
             await bot.get_channel(channel_id).send(
             '[This message is too large.]')
