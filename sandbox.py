@@ -75,11 +75,13 @@ def stop_and_destroy(container_name):
 def setup_base():
     # Create the container rootfs
     if not base.defined:
+        print('Base container not defined, creating...')
         if not base.create("download", lxc.LXC_CREATE_QUIET, {"dist": "ubuntu",
                                                            "release": "trusty",
                                                            "arch": "amd64"}):
             print("Failed to create the container rootfs", file=sys.stderr)
             return
+        print('Base container created')
 
 
     base.set_config_item('lxc.ephemeral', '1')
