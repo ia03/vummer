@@ -59,7 +59,7 @@ async def py(ctx):
 @bot.command()
 async def setinput(ctx):
     """Sets the input that is to be passed to Python code you run.
-    Usage: $set_input (input)
+    Usage: $setinput (input)
     """
     args = ctx.message.content[10:]
     print('Setting input:', args)
