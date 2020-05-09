@@ -1,7 +1,8 @@
 # Vummer
 
 Vummer is a Discord bot that can run Python scripts. To do this securely, it
-creates an LXC container in which the code is run.
+creates an LXC container in which the code is run. Check out the Discord server
+[here.](https://discord.gg/2NGbScj)
 
 ## Install
 
