@@ -4,6 +4,7 @@ from print_queue import send_message
 from multiprocessing import Process
 from utils import search_between, LimitedSizeDict
 import datetime
+import aiofiles
 
 inputs = LimitedSizeDict(size_limit=1000)
 
@@ -20,8 +21,6 @@ def py_process(args, message_id, channel_id, input_data):
 
     log_filename = get_log_filename(message_id)
     with open(log_filename, 'a') as log_file:
-        log_file.write(str(datetime.datetime.now()) + '\n')
-        log_file.write(message_id + ' ' + str(channel_id) + '\n')
         log_file.write('Code: ' + code + '\n')
         log_file.write('Input: ' + input_data + '\n')
 
@@ -50,13 +49,19 @@ class Coding(commands.Cog):
         time limit of 2 seconds.
         Usage: $py (code)
         """
-        input_key = str(ctx.message.author.id)
+        author_id = str(ctx.message.author.id)
         if input_key in inputs:
-            input_data = inputs[input_key]
+            input_data = inputs[author_id]
         else:
             input_data = ''
+        message_id = str(ctx.message.id)
+        async with aiofiles.open(get_log_filename(message_id), 'a') as log_file:
+            await log_file.write(str(datetime.datetime.now()) + '\n')
+            await log_file.write(author_id + ' ' + message_id + ' '
+                + str(channel_id) + '\n')
+
         process = Process(target=py_process, args=(ctx.message.content[4:],
-            str(ctx.message.id), ctx.message.channel.id, input_data))
+            message_id, ctx.message.channel.id, input_data))
         process.start()
 
     @commands.command()
