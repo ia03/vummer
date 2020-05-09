@@ -57,11 +57,11 @@ async def py(ctx):
     process.start()
 
 @bot.command()
-async def set_input(ctx):
+async def setinput(ctx):
     """Sets the input that is to be passed to Python code you run.
     Usage: $set_input (input)
     """
-    args = ctx.message.content[11:]
+    args = ctx.message.content[10:]
     print('Setting input:', args)
     if '```' in args:
         data = search_between(args, '```', '```')
