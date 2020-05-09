@@ -50,7 +50,7 @@ class Coding(commands.Cog):
         Usage: $py (code)
         """
         author_id = str(ctx.message.author.id)
-        if input_key in inputs:
+        if author_id in inputs:
             input_data = inputs[author_id]
         else:
             input_data = ''
