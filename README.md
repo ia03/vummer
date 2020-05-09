@@ -35,3 +35,8 @@ Run `main.py`
 ```
 python3 main.py
 ```
+
+## Disclaimer
+
+I'm not responsible if you get hacked while running this. You are responsible
+for your own safety.
