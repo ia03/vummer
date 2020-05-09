@@ -47,6 +47,7 @@ def prepare_lxc(container_name):
         flags=lxc.LXC_CLONE_SNAPSHOT)
     c = lxc.Container(container_name)
 
+    c.set_config_item('lxc.ephemeral', '1')
     # Start the container
     if not c.start():
         print("Failed to start the container", file=sys.stderr)
@@ -75,7 +76,6 @@ def setup_base():
         print('Base container created')
 
 
-    base.set_config_item('lxc.ephemeral', '1')
 
 def print_state(container_name):
     c = lxc.Container(container_name)
