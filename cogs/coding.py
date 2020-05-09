@@ -27,9 +27,6 @@ def py_process(args, message_id, channel_id, input_data):
         log_file.write('Input: ' + input_data + '\n')
 
     results = sandbox_python(code, message_id, input_data)
-    with open(log_filename, 'a') as log_file:
-        log_file.write('Output: ' + results['output'] + '\n')
-        log_file.write('Errors: ' + results['errors'])
     if results['output']:
         send_message(channel_id, 'Output: ```\n' + results['output']
             + '\n```')
