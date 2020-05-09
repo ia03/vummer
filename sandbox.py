@@ -11,6 +11,7 @@ def sandbox_python(code, container_name, input_data):
     output_filename = get_output_filename(container_name)
     error_filename = get_error_filename(container_name)
     input_filename = get_input_filename(container_name)
+    log_filename = get_log_filename(container_name)
     def user_code():
         exec(code)
 
@@ -90,6 +91,9 @@ def get_error_filename(container_name):
 
 def get_input_filename(container_name):
     return 'io/' + container_name + '.in'
+
+def get_log_filename(container_name):
+    return 'log/' + container_name + '.log'
 
 def ignore_first_error(error_filename):
     # Ignore first 5 lines of errors

@@ -1,8 +1,9 @@
 from discord.ext import commands
-from sandbox import sandbox_python, stop_and_destroy
+from sandbox import sandbox_python, stop_and_destroy, get_log_filename
 from print_queue import send_message
 from multiprocessing import Process
 from utils import search_between, LimitedSizeDict
+import datetime
 
 inputs = LimitedSizeDict(size_limit=1000)
 
@@ -17,7 +18,16 @@ def py_process(args, message_id, channel_id, input_data):
         code = args
     print('Running code: ', code)
 
+    log_filename = get_log_filename(message_id)
+    with open(log_filename, 'a') as log_file:
+        log_file.write(datetime.datetime.now())
+        log_file.write(message_id + ' ' + str(channel_id) + '\n')
+        log_file.write('Code: ' + code + '\n' + 'Input:' input_data)
+
     results = sandbox_python(code, message_id, input_data)
+    with open(log_filename, 'a') as log_file:
+        log_file.write('Output: ' + results['output'] + '\n')
+        log_file.write('Errors: ' + results['errors'])
     if results['output']:
         send_message(channel_id, 'Output: ```\n' + results['output']
             + '\n```')
