@@ -3,16 +3,17 @@ import config
 import discord
 import re
 from discord.ext import commands, tasks
-from utils import search_between
 from sandbox import setup_base
 from print_queue import pop_message
 from cogs.coding import Coding
+from discord import Game
 
 bot = commands.Bot(command_prefix='$')
 
 @bot.event
 async def on_ready():
     print('Bot is ready.')
+    await bot.change_presence(activity=Game(name='with Python'))
 
 @tasks.loop(seconds=0.05)
 async def check_print_queue():
