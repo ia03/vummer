@@ -45,7 +45,7 @@ def py_process(args, message_id, channel_id, input_data):
 @bot.command()
 async def py(ctx):
     """Runs Python code. Accepts codeblocks and regular text.
-    Usage: $py code
+    Usage: $py (code)
     """
     input_key = str(ctx.message.author.id)
     if input_key in inputs:
@@ -57,11 +57,11 @@ async def py(ctx):
     process.start()
 
 @bot.command()
-async def input(ctx):
+async def set_input(ctx):
     """Sets the input that is to be passed to Python code you run.
-    Usage: $input input
+    Usage: $set_input (input)
     """
-    args = ctx.message.content[7:]
+    args = ctx.message.content[11:]
     print('Setting input:', args)
     if '```' in args:
         data = search_between(args, '```', '```')
