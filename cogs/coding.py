@@ -22,7 +22,7 @@ def py_process(args, message_id, channel_id, input_data):
     with open(log_filename, 'a') as log_file:
         log_file.write(datetime.datetime.now())
         log_file.write(message_id + ' ' + str(channel_id) + '\n')
-        log_file.write('Code: ' + code + '\n' + 'Input:' input_data)
+        log_file.write('Code: ' + code + '\n' + 'Input:' + input_data)
 
     results = sandbox_python(code, message_id, input_data)
     with open(log_filename, 'a') as log_file:
