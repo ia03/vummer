@@ -7,6 +7,7 @@ from sandbox import setup_base
 from print_queue import pop_message
 from cogs.coding import Coding
 from discord import Game
+from discord.utils import escape_mentions
 
 bot = commands.Bot(command_prefix='$')
 
@@ -22,7 +23,7 @@ async def check_print_queue():
     except:
         return
     channel_id = data[0]
-    message = data[1]
+    message = escape_mentions(data[1])
     print('New message to channel', str(channel_id) + ':', str(message))
     if len(message) > 2000:
         await bot.get_channel(channel_id).send(
