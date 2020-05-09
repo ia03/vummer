@@ -1,7 +1,6 @@
 import lxc
 import sys
 import os
-from time_limit import time_limit, TimeoutException
 from utils import time_limit_lxc
 from threading import Thread
 
