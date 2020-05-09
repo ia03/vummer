@@ -2,9 +2,9 @@ from discord.ext import commands
 from sandbox import sandbox_python, stop_and_destroy
 from print_queue import send_message
 from multiprocessing import Process
-from utils import search_between
+from utils import search_between, LimitedSizeDict
 
-inputs = {}
+inputs = LimitedSizeDict()
 
 def py_process(args, message_id, channel_id, input_data):
     if '```python' in args:
@@ -50,8 +50,9 @@ class Coding(commands.Cog):
 
     @commands.command()
     async def setinput(self, ctx):
-        """Sets the input that is to be passed to Python code you run.
-        Usage: $setinput (input)
+        """Sets the input that is to be passed to Python code you run. Using
+        the command without an argument clears the input.
+        Usage: $setinput [input]
         """
         args = ctx.message.content[10:]
         print('Setting input:', args)
