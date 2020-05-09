@@ -24,7 +24,8 @@ def time_limit_lxc(container_name, time_limit):
     c = lxc.Container(container_name)
     start_time = time.time()
     while True:
-        if (time.time() - start_time) > time_limit and c.running:
-            c.stop()
+        if (time.time() - start_time) > time_limit:
+            if c.running:
+                c.stop()
             return
         time.sleep(0.1)
