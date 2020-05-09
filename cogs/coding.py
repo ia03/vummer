@@ -5,6 +5,8 @@ from multiprocessing import Process
 from utils import search_between, LimitedSizeDict
 import datetime
 import aiofiles
+import os
+import signal
 
 inputs = LimitedSizeDict(size_limit=1000)
 
@@ -38,6 +40,7 @@ def py_process(args, message_id, channel_id, input_data):
             'Errors: ```\n' + results['errors'] + '\n```')
     stop_and_destroy(message_id)
     print('Container destroyed. Ending process.')
+    os.kill(os.getpid(), signal.SIGKILL)
 
 class Coding(commands.Cog):
     def __init__(self, bot):
