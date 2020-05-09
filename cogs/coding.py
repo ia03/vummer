@@ -55,13 +55,14 @@ class Coding(commands.Cog):
         else:
             input_data = ''
         message_id = str(ctx.message.id)
+        channel_id = ctx.message.channel.id
         async with aiofiles.open(get_log_filename(message_id), 'a') as log_file:
             await log_file.write(str(datetime.datetime.now()) + '\n')
             await log_file.write(author_id + ' ' + message_id + ' '
                 + str(channel_id) + '\n')
 
         process = Process(target=py_process, args=(ctx.message.content[4:],
-            message_id, ctx.message.channel.id, input_data))
+            message_id, channel_id, input_data))
         process.start()
 
     @commands.command()
