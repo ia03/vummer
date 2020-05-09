@@ -93,7 +93,7 @@ def get_input_filename(container_name):
     return 'io/' + container_name + '.in'
 
 def get_log_filename(container_name):
-    return 'log/' + container_name + '.log'
+    return 'logs/' + container_name + '.log'
 
 def ignore_first_error(error_filename):
     # Ignore first 5 lines of errors
