@@ -4,7 +4,7 @@ from print_queue import send_message
 from multiprocessing import Process
 from utils import search_between, LimitedSizeDict
 
-inputs = LimitedSizeDict()
+inputs = LimitedSizeDict(size_limit=1000)
 
 def py_process(args, message_id, channel_id, input_data):
     if '```python' in args:
