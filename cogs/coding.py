@@ -35,7 +35,8 @@ class Coding(commands.Cog):
 
     @commands.command()
     async def py(self, ctx):
-        """Runs Python code. Accepts codeblocks and regular text.
+        """Runs Python code. Accepts codeblocks and regular text. There is a
+        time limit of 2 seconds.
         Usage: $py (code)
         """
         input_key = str(ctx.message.author.id)
