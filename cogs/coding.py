@@ -41,6 +41,7 @@ def py_process(args, message_id, channel_id, input_data):
     stop_and_destroy(message_id)
     print('Container destroyed. Ending process.')
     os.kill(os.getpid(), signal.SIGKILL)
+    print('This message should not be visible.')
 
 class Coding(commands.Cog):
     def __init__(self, bot):
