@@ -34,7 +34,7 @@ async def check_print_queue():
         pass
 
 @bot.command()
-async def setinput():
+async def setinput(ctx):
     """Sets the input that is to be passed to code you run. Using
     the command without an argument clears the input.
     Usage: $setinput [input]
