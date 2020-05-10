@@ -52,8 +52,8 @@ class Coding(commands.Cog):
             await log_file.write(str(datetime.datetime.now()) + '\n')
             await log_file.write(author_id + ' ' + message_id + ' '
                 + str(channel_id) + '\n')
-
-        thread = Thread(target=run_code, args=(ctx.message.content[4:],
+        args = ctx.message.content[ctx.message.content.find(' ') + 1:]
+        thread = Thread(target=run_code, args=(args,
             message_id, channel_id, input_data, lang_id))
         thread.start()
 
@@ -70,6 +70,20 @@ class Coding(commands.Cog):
         Usage: $cpp (code)
         """
         await self.code_command(ctx, 53)
+
+    @commands.command()
+    async def java(self, ctx):
+        """Runs Java code. Accepts codeblocks and regular text.
+        Usage: $java (code)
+        """
+        await self.code_command(ctx, 62)
+
+    @commands.command()
+    async def js(self, ctx):
+        """Runs Javascript code. Accepts codeblocks and regular text.
+        Usage: $js (code)
+        """
+        await self.code_command(ctx, 63)
 
     @commands.command()
     async def setinput(self, ctx):

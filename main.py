@@ -13,7 +13,7 @@ bot = commands.Bot(command_prefix='$')
 @bot.event
 async def on_ready():
     print('Bot is ready.')
-    await bot.change_presence(activity=Game(name='with Python (try $help)'))
+    await bot.change_presence(activity=Game(name='with code (try $help)'))
 
 @tasks.loop(seconds=0.05)
 async def check_print_queue():
