@@ -19,6 +19,7 @@ def run_code(args, message_id, channel_id, input_data, lang_id):
         log_file.write('Input: ' + input_data + '\n')
     submission = api.submission.submit(client, code.encode(), lang_id,
         stdin=input_data.encode())
+    status = submission.status
     output = submission.stdout
     errors = submission.stderr
     compile_output = submission.compile_output
@@ -28,6 +29,8 @@ def run_code(args, message_id, channel_id, input_data, lang_id):
         errors = errors.decode()
     if compile_output:
         compile_output = compile_output.decode()
+    send_message(channel_id, 'Status: ' + status['description'])
+
     if output:
         send_message(channel_id, 'Output: ```\n' + output
             + '\n```')

@@ -1,6 +1,7 @@
 import time
 import lxc
 from collections import OrderedDict
+from judge0api.status import Judge0Status
 
 class LimitedSizeDict(OrderedDict):
     def __init__(self, *args, **kwds):
