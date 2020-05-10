@@ -12,15 +12,7 @@ Dependencies are located in `requirements.txt`
 pip install -r requirements.txt
 ```
 
-[python3-lxc](https://github.com/lxc/python3-lxc) is also needed.
-
-```
-git clone https://github.com/lxc/python3-lxc.git
-cd python3-lxc
-pip install .
-```
-
-You need LXC installed and configured to support unprivileged LXC containers.
+[judge0](https://github.com/judge0/api) is also needed.
 
 ## Configuration
 
