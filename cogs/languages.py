@@ -45,6 +45,7 @@ def run_code(args, message_id, channel_id, input_data, attachment, lang_id):
     if compile_output:
         send_message(channel_id, 'Compiler output: ```\n' + compile_output
             + '\n```')
+    send_message(channel_id, 'Time: ' + str(submission.time) + ' s')
 
 class Languages(commands.Cog):
     def __init__(self, bot):
