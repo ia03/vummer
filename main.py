@@ -35,8 +35,9 @@ async def check_print_queue():
 
 @bot.command()
 async def setinput(ctx):
-    """Sets the input that is to be passed to code you run. Using
-    the command without an argument clears the input.
+    """Sets the input that is to be passed to code you run.
+    You can set multiple lines of input.
+    Using the command without an argument clears the input.
     Usage: $setinput [input]
     """
     args = ctx.message.content[10:]
