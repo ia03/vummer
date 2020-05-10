@@ -21,10 +21,13 @@ def run_code(args, message_id, channel_id, input_data, lang_id):
         stdin=input_data.encode())
     output = submission.stdout
     errors = submission.stderr
+    compile_output = submission.compile_output
     if output:
         output = output.decode()
     if errors:
         errors = errors.decode()
+    if compile_output:
+        compile_output = compile_output.decode()
     if output:
         send_message(channel_id, 'Output: ```\n' + output
             + '\n```')
@@ -33,6 +36,9 @@ def run_code(args, message_id, channel_id, input_data, lang_id):
     if errors:
         send_message(channel_id,
             'Errors: ```\n' + errors + '\n```')
+    if compile_output:
+        send_message(channel_id, 'Compiler output: ```\n' + compile_output
+            + '\n```')
 
 class Languages(commands.Cog):
     def __init__(self, bot):
