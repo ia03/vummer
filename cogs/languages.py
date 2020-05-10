@@ -50,7 +50,9 @@ class Languages(commands.Cog):
             await log_file.write(str(datetime.datetime.now()) + '\n')
             await log_file.write(author_id + ' ' + message_id + ' '
                 + str(channel_id) + '\n')
-        args = ctx.message.content[ctx.message.content.find(' ') + 1:]
+        start_index = min(ctx.message.content.find(' '),
+            ctx.message.content.find('\n'))
+        args = ctx.message.content[start_index + 1:]
         thread = Thread(target=run_code, args=(args,
             message_id, channel_id, input_data, lang_id))
         thread.start()
