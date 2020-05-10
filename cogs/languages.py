@@ -50,9 +50,20 @@ class Languages(commands.Cog):
             await log_file.write(str(datetime.datetime.now()) + '\n')
             await log_file.write(author_id + ' ' + message_id + ' '
                 + str(channel_id) + '\n')
-        start_index = min(ctx.message.content.find(' '),
-            ctx.message.content.find('\n', 2))
+        first_space = ctx.message.content.find(' ')
+        first_newline = ctx.message.content.find('\n', 2)
+        if first_space > 0 and first_newline > 0:
+            start_index = min(first_space, first_newline)
+        elif first_space > 0:
+            start_index = first_space
+        elif first_newline > 0:
+            start_index = first_newline
+        else:
+            await ctx.send('No code was provided.')
+            return
+
         args = ctx.message.content[start_index + 1:]
+
         thread = Thread(target=run_code, args=(args,
             message_id, channel_id, input_data, lang_id))
         thread.start()
