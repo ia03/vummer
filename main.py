@@ -3,7 +3,6 @@ import config
 import discord
 import re
 from discord.ext import commands, tasks
-from sandbox import setup_base
 from print_queue import pop_message
 from cogs.coding import Coding
 from discord import Game
@@ -34,7 +33,6 @@ async def check_print_queue():
         pass
 
 def main():
-    setup_base()
     check_print_queue.start()
     bot.add_cog(Coding(bot))
     bot.run(config.token)
