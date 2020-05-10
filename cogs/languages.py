@@ -202,14 +202,14 @@ class Languages(commands.Cog):
         Usage: $scala (code)
         """
         await self.code_command(ctx, 81)
-'''
+    '''
     @commands.command()
     async def swift(self, ctx):
         """Runs Swift (5.2.3) code.
         Usage: $swift (code)
         """
         await self.code_command(ctx, 83)
-'''
+    '''
     @commands.command()
     async def rust(self, ctx):
         """Runs Rust (1.40.0) code.
