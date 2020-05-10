@@ -156,7 +156,7 @@ class Coding(commands.Cog):
         await self.code_command(ctx, 46)
 
     @commands.command()
-    async def PHP(self, ctx):
+    async def php(self, ctx):
         """Runs PHP code. Accepts codeblocks and regular text.
         Usage: $php (code)
         """
