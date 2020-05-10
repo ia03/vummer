@@ -59,17 +59,45 @@ class Coding(commands.Cog):
 
     @commands.command()
     async def py(self, ctx):
-        """Runs Python code. Accepts codeblocks and regular text.
+        """Runs Python 3 code. Accepts codeblocks and regular text.
         Usage: $py (code)
         """
         await self.code_command(ctx, 71)
+
+    @commands.command()
+    async def py2(self, ctx):
+        """Runs Python 2 code. Accepts codeblocks and regular text.
+        Usage: $py2 (code)
+        """
+        await self.code_command(ctx, 70)
 
     @commands.command()
     async def cpp(self, ctx):
         """Runs C++ code. Accepts codeblocks and regular text.
         Usage: $cpp (code)
         """
-        await self.code_command(ctx, 53)
+        await self.code_command(ctx, 54)
+
+    @commands.command()
+    async def c(self, ctx):
+        """Runs C code. Accepts codeblocks and regular text.
+        Usage: $c (code)
+        """
+        await self.code_command(ctx, 50)
+
+    @commands.command()
+    async def cs(self, ctx):
+        """Runs C# code. Accepts codeblocks and regular text.
+        Usage: $cs (code)
+        """
+        await self.code_command(ctx, 51)
+
+    @commands.command()
+    async def oc(self, ctx):
+        """Runs Objective C code. Accepts codeblocks and regular text.
+        Usage: $oc (code)
+        """
+        await self.code_command(ctx, 79)
 
     @commands.command()
     async def java(self, ctx):
@@ -84,6 +112,62 @@ class Coding(commands.Cog):
         Usage: $js (code)
         """
         await self.code_command(ctx, 63)
+
+    @commands.command()
+    async def sql(self, ctx):
+        """Runs SQL code. Accepts codeblocks and regular text.
+        Usage: $sql (code)
+        """
+        await self.code_command(ctx, 82)
+
+    @commands.command()
+    async def vb(self, ctx):
+        """Runs Visual Basic .NET code. Accepts codeblocks and regular text.
+        Usage: $vb (code)
+        """
+        await self.code_command(ctx, 84)
+
+    @commands.command()
+    async def octave(self, ctx):
+        """Runs Octave code. Accepts codeblocks and regular text.
+        Usage: $octave (code)
+        """
+        await self.code_command(ctx, 66)
+
+    @commands.command()
+    async def clisp(self, ctx):
+        """Runs Common LISP code. Accepts codeblocks and regular text.
+        Usage: $clisp (code)
+        """
+        await self.code_command(ctx, 55)
+
+    @commands.command()
+    async def as(self, ctx):
+        """Runs Assembly code. Accepts codeblocks and regular text.
+        Usage: $as (code)
+        """
+        await self.code_command(ctx, 45)
+
+    @commands.command()
+    async def bash(self, ctx):
+        """Runs Bash code. Accepts codeblocks and regular text.
+        Usage: $bash (code)
+        """
+        await self.code_command(ctx, 46)
+
+    @commands.command()
+    async def PHP(self, ctx):
+        """Runs PHP code. Accepts codeblocks and regular text.
+        Usage: $php (code)
+        """
+        await self.code_command(ctx, 68)
+
+    @commands.command()
+    async def lua(self, ctx):
+        """Runs Lua code. Accepts codeblocks and regular text.
+        Usage: $lua (code)
+        """
+        await self.code_command(ctx, 64)
 
     @commands.command()
     async def setinput(self, ctx):
