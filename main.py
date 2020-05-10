@@ -4,9 +4,10 @@ import discord
 import re
 from discord.ext import commands, tasks
 from print_queue import pop_message
-from cogs.coding import Coding
+from cogs.languages import Languages
 from discord import Game
 from discord.utils import escape_mentions
+from inputs import inputs
 
 bot = commands.Bot(command_prefix='$')
 
@@ -32,9 +33,28 @@ async def check_print_queue():
     except:
         pass
 
+@bot.command()
+async def setinput(self, ctx):
+    """Sets the input that is to be passed to code you run. Using
+    the command without an argument clears the input.
+    Usage: $setinput [input]
+    """
+    args = ctx.message.content[10:]
+    print('Setting input:', args)
+    if '```' in args:
+        data = search_between(args, '```', '```')
+    else:
+        data = args
+    inputs[str(ctx.message.author.id)] = data
+    if data:
+        message = 'Input set: ```\n' + data + '\n```'
+        await ctx.send(message)
+    else:
+        await ctx.send('Input cleared.')
+
 def main():
     check_print_queue.start()
-    bot.add_cog(Coding(bot))
+    bot.add_cog(Languages(bot))
     bot.run(config.token)
 
 if __name__ == '__main__':
