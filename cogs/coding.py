@@ -142,9 +142,9 @@ class Coding(commands.Cog):
         await self.code_command(ctx, 55)
 
     @commands.command()
-    async def as(self, ctx):
+    async def ass(self, ctx):
         """Runs Assembly code. Accepts codeblocks and regular text.
-        Usage: $as (code)
+        Usage: $ass (code)
         """
         await self.code_command(ctx, 45)
 
