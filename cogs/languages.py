@@ -5,7 +5,7 @@ from utils import (search_between, get_log_filename, get_code)
 import datetime
 import aiofiles
 import judge0api as api
-import inputs.inputs
+from inputs import inputs
 
 client = api.Client("http://127.0.0.1")
 
@@ -40,8 +40,8 @@ class Languages(commands.Cog):
 
     async def code_command(self, ctx, lang_id):
         author_id = str(ctx.message.author.id)
-        if author_id in inputs.inputs:
-            input_data = inputs.inputs[author_id]
+        if author_id in inputs:
+            input_data = inputs[author_id]
         else:
             input_data = ''
         message_id = str(ctx.message.id)
