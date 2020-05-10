@@ -10,14 +10,17 @@ from inputs import inputs
 client = api.Client("http://127.0.0.1")
 
 
-def run_code(args, message_id, channel_id, input_data, lang_id):
-    code = get_code(args)
-    print('Running code: ', code)
+def run_code(args, message_id, channel_id, input_data, attachment, lang_id):
+    if attachment:
+        code = attachment
+    else:
+        code = get_code(args).encode()
+    print('Running code: ', code.decode())
     log_filename = get_log_filename(message_id)
     with open(log_filename, 'a') as log_file:
-        log_file.write('Code: ' + code + '\n')
+        log_file.write('Code: ' + code.decode() + '\n')
         log_file.write('Input: ' + input_data + '\n')
-    submission = api.submission.submit(client, code.encode(), lang_id,
+    submission = api.submission.submit(client, code, lang_id,
         stdin=input_data.encode())
     status = submission.status
     output = submission.stdout
@@ -67,14 +70,20 @@ class Languages(commands.Cog):
             start_index = first_space
         elif first_newline > 0:
             start_index = first_newline
+        elif ctx.message.attachments:
+            start_index = 0
         else:
             await ctx.send('No code was provided.')
             return
 
         args = ctx.message.content[start_index + 1:]
+        if ctx.message.attachments:
+            attachment = await ctx.message.attachments[0].read()
+        else:
+            attachment = None
 
         thread = Thread(target=run_code, args=(args,
-            message_id, channel_id, input_data, lang_id))
+            message_id, channel_id, input_data, attachment, lang_id))
         thread.start()
 
     @commands.command()
