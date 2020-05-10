@@ -294,3 +294,17 @@ class Languages(commands.Cog):
         Usage: $d (code)
         """
         await self.code_command(ctx, 56)
+
+    @commands.command()
+    async def elixir(self, ctx):
+        """Runs Elixir (1.9.4) code.
+        Usage: $elixir (code)
+        """
+        await self.code_command(ctx, 57)
+
+    @commands.command()
+    async def ocaml(self, ctx):
+        """Runs OCaml (4.09.0) code.
+        Usage: $ocaml (code)
+        """
+        await self.code_command(ctx, 65)
