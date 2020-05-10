@@ -195,13 +195,14 @@ class Languages(commands.Cog):
         Usage: $pascal (code)
         """
         await self.code_command(ctx, 67)
-
+    '''
     @commands.command()
     async def scala(self, ctx):
         """Runs Scala (2.13.2) code.
         Usage: $scala (code)
         """
         await self.code_command(ctx, 81)
+    '''
     '''
     @commands.command()
     async def swift(self, ctx):
