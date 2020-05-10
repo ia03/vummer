@@ -23,12 +23,8 @@ def search_between(content, start, end):
 def get_log_filename(container_name):
     return 'logs/' + container_name + '.log'
 
-def get_py_code(args):
-    if '```python' in args:
-        code = search_between(args, '```python', '```')
-    elif '```py' in args:
-        code = search_between(args, '```py', '```')
-    elif '```' in args:
+def get_code(args):
+    if '```' in args:
         code = search_between(args, '```', '```')
     else:
         code = args

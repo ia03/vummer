@@ -2,7 +2,7 @@ from discord.ext import commands
 from print_queue import send_message
 from threading import Thread
 from utils import (search_between, LimitedSizeDict, get_log_filename,
-    get_py_code)
+    get_code)
 import datetime
 import aiofiles
 import judge0api as api
@@ -13,7 +13,7 @@ client = api.Client("http://127.0.0.1")
 
 
 def run_code(args, message_id, channel_id, input_data, lang_id):
-    code = get_py_code(args)
+    code = get_code(args)
     print('Running code: ', code)
     log_filename = get_log_filename(message_id)
     with open(log_filename, 'a') as log_file:
@@ -32,7 +32,7 @@ def run_code(args, message_id, channel_id, input_data, lang_id):
             + '\n```')
     else:
         send_message(channel_id, 'No output sent.')
-    if errors != '':
+    if errors:
         send_message(channel_id,
             'Errors: ```\n' + errors + '\n```')
 
@@ -40,11 +40,7 @@ class Coding(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def py(self, ctx):
-        """Runs Python code. Accepts codeblocks and regular text.
-        Usage: $py (code)
-        """
+    async def code_command(self, ctx, lang_id):
         author_id = str(ctx.message.author.id)
         if author_id in inputs:
             input_data = inputs[author_id]
@@ -58,8 +54,22 @@ class Coding(commands.Cog):
                 + str(channel_id) + '\n')
 
         thread = Thread(target=run_code, args=(ctx.message.content[4:],
-            message_id, channel_id, input_data, 71))
+            message_id, channel_id, input_data, lang_id))
         thread.start()
+
+    @commands.command()
+    async def py(self, ctx):
+        """Runs Python code. Accepts codeblocks and regular text.
+        Usage: $py (code)
+        """
+        await self.code_command(ctx, 71)
+
+    @commands.command()
+    async def cpp(self, ctx):
+        """Runs C++ code. Accepts codeblocks and regular text.
+        Usage: $cpp (code)
+        """
+        await self.code_command(ctx, 53)
 
     @commands.command()
     async def setinput(self, ctx):
