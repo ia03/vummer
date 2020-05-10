@@ -6,7 +6,7 @@ from discord.ext import commands, tasks
 from print_queue import pop_message
 from cogs.languages import Languages
 from discord import Game
-from discord.utils import escape_mentions
+from discord.utils import escape_mentions, oauth_url
 from inputs import inputs
 
 bot = commands.Bot(command_prefix='$')
@@ -52,6 +52,11 @@ async def setinput(ctx):
         await ctx.send(message)
     else:
         await ctx.send('Input cleared.')
+
+@bot.command()
+async def invite(ctx):
+    """Sends the bot invite link."""
+    await ctx.send(oauth_url(bot.user.id))
 
 def main():
     check_print_queue.start()
