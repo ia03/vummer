@@ -1,14 +1,11 @@
 from discord.ext import commands
 from print_queue import send_message
 from threading import Thread
-from utils import (search_between, LimitedSizeDict, get_log_filename,
-    get_code)
+from utils import (search_between, get_log_filename, get_code)
 import datetime
 import aiofiles
 import judge0api as api
-from inputs import inputs
-
-inputs = LimitedSizeDict(size_limit=1000)
+import inputs.inputs
 
 client = api.Client("http://127.0.0.1")
 
@@ -43,8 +40,8 @@ class Languages(commands.Cog):
 
     async def code_command(self, ctx, lang_id):
         author_id = str(ctx.message.author.id)
-        if author_id in inputs:
-            input_data = inputs[author_id]
+        if author_id in inputs.inputs:
+            input_data = inputs.inputs[author_id]
         else:
             input_data = ''
         message_id = str(ctx.message.id)
