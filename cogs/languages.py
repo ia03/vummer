@@ -317,3 +317,10 @@ class Languages(commands.Cog):
         Usage: $ocaml (code)
         """
         await self.code_command(ctx, 65)
+
+    @commands.command()
+    async def text(self, ctx):
+        """Displays plain text.
+        Usage: $text (code)
+        """
+        await self.code_command(ctx, 43)
