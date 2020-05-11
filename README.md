@@ -1,7 +1,6 @@
 # Vummer
 
-Vummer is a Discord bot that can run Python scripts. To do this securely, it
-creates an LXC container in which the code is run. Check out the Discord server
+Vummer is a Discord bot that can run Python scripts using [Judge0.](https://github.com/judge0/api). Check out the Discord server
 [here.](https://discord.gg/2NGbScj)
 
 ## Install
@@ -12,7 +11,7 @@ Dependencies are located in `requirements.txt`
 pip install -r requirements.txt
 ```
 
-[judge0](https://github.com/judge0/api) is also needed.
+[Judge0](https://github.com/judge0/api) is also needed.
 
 ## Configuration
 
