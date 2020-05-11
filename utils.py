@@ -1,5 +1,4 @@
 import time
-import lxc
 from collections import OrderedDict
 from judge0api.status import Judge0Status
 
