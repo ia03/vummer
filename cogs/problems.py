@@ -14,7 +14,11 @@ def get_problem(problem_name):
 
 def get_current_problem(author_id):
     if author_id in current_problem:
-        return current_problem[author_id]
+        if current_problem[author_id] in problems:
+            return current_problem[author_id]
+        else:
+            current_problem[author_id] = None
+            return None
     else:
         return None
 
@@ -134,6 +138,23 @@ class Problems(commands.Cog):
         del problems[problem_name].cases[arg]
         await ctx.send('Case deleted.')
         await write_problems()
+
+    @commands.command()
+    @commands.is_owner()
+    async def listcases(self, ctx, problem_name):
+        '''Lists a problem's cases. Only available to the bot owner.'''
+        if not await problem_exists(ctx, problem_name):
+            return
+        cases = problems[problem_name].cases
+        if not cases:
+            await ctx.send('No cases found.')
+            return
+        message = ""
+        for expected_input in cases:
+            expected_output = cases[expected_input]
+            message += ("Expected input:```\n" + expected_input + "\n```"
+                + "Expected output:```\n" + expected_output + "\n```")
+        await ctx.send(message)
 
     @commands.command()
     async def doprob(self, ctx, problem_name=None):
