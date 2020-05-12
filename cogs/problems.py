@@ -84,6 +84,7 @@ class Problems(commands.Cog):
         if not await problem_exists(ctx, problem_name):
             return
         problems[problem_name].details = arg
+        await ctx.send('Problem details set.')
         await write_problems()
 
     @commands.command()
@@ -120,6 +121,18 @@ class Problems(commands.Cog):
         message += 'Expected input:```\n' + expected_input + '```'
         message += 'Expected output:```\n' + expected_output + '```'
         await ctx.send(message)
+        await write_problems()
+
+    @commands.command()
+    @commands.is_owner()
+    async def delcase(self, ctx, problem_name, *, arg):
+        '''Deletes a problem case. Only available to the bot owner.'''
+        if not await problem_exists(ctx, problem_name):
+            return
+        if arg not in problems[problen_name].cases:
+            await ctx.send('The specified case does not exist.')
+        del problems[problem_name].cases[arg]
+        await ctx.send('Case deleted.')
         await write_problems()
 
     @commands.command()
