@@ -9,8 +9,15 @@ problems_filename = 'problems.json'
 
 def read_problems():
     global problems
+    problems = {}
     with open('problems.json') as problems_file:
-        problems = jsons.loads(problems_file.read())
+        list = jsons.loads(problems_file.read())
+    for problem_name in list:
+        problems[problem_name] = Problem()
+        problems[problem_name].details = list[problem_name]['details']
+        for input in list[problem_name]['cases']:
+            problems[problem_name].cases[input] = (list[problem_name]['cases']
+                [input])
 
 async def write_problems():
     async with aiofiles.open('problems.json', 'w') as problems_file:
@@ -32,6 +39,11 @@ class Problems(commands.Cog):
         if isinstance(error, commands.NotOwner):
             await ctx.send('You must be the bot owner to use this command.')
             return
+        elif isinstance(error, commands.BotMissingPermissions):
+            await ctx.send('You do not have the permissions required to use',
+                'this command.')
+            return
+        print(error)
 
     @commands.command()
     @commands.is_owner()
@@ -68,10 +80,36 @@ class Problems(commands.Cog):
         '''Retrieves information about a problem.'''
         if not await problem_exists(ctx, problem_name):
             return
-        text = 'Problem details:\n\'\'\'\n'
+        text = 'Problem details:```\n'
         text += problems[problem_name].details
-        text += '\n\'\'\''
+        text += '\n```'
         await ctx.send(text)
+
+    @commands.command()
+    @commands.is_owner()
+    async def clearprobcases(self, ctx, problem_name):
+        '''Clears a problem's cases. Only available to the bot owner.'''
+        if not await problem_exists(ctx, problem_name):
+            return
+        problems[problem_name].cases = {}
+
+        await write_problems()
+
+    @commands.command()
+    @commands.is_owner()
+    async def addcase(self, ctx, problem_name, *, arg):
+        '''Adds a problem case. Only available to the bot owner.'''
+        if not await problem_exists(ctx, problem_name):
+            return
+        list = arg.split('|')
+        expected_input = list[0]
+        expected_output = list[1]
+        problems[problem_name].cases[expected_input] = expected_output
+        message = 'Case successfully added.\n'
+        message += 'Expected input:```\n' + expected_input + '```'
+        message += 'Expected output:```\n' + expected_output + '```'
+        await ctx.send(message)
+        await write_problems()
 
     @commands.command()
     async def listprobs(self, ctx):
