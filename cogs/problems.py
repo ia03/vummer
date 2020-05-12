@@ -5,7 +5,18 @@ import aiofiles
 
 problems = {}
 
+current_problem = {}
+
 problems_filename = 'problems.json'
+
+def get_problem(problem_name):
+    return problems[problem_name]
+
+def get_current_problem(author_id):
+    if author_id in current_problem:
+        return current_problem[author_id]
+    else:
+        return None
 
 def read_problems():
     global problems
@@ -87,12 +98,12 @@ class Problems(commands.Cog):
 
     @commands.command()
     @commands.is_owner()
-    async def clearprobcases(self, ctx, problem_name):
+    async def clearcases(self, ctx, problem_name):
         '''Clears a problem's cases. Only available to the bot owner.'''
         if not await problem_exists(ctx, problem_name):
             return
         problems[problem_name].cases = {}
-
+        await ctx.send('Cases cleared.')
         await write_problems()
 
     @commands.command()
@@ -110,6 +121,20 @@ class Problems(commands.Cog):
         message += 'Expected output:```\n' + expected_output + '```'
         await ctx.send(message)
         await write_problems()
+
+    @commands.command()
+    async def doprob(self, ctx, problem_name=None):
+        '''Uses future code submissions as answers to the specific problem.
+        Using this command without a problem name makes the bot stop checking
+        your submissions against the specified problem.'''
+        if problem_name:
+            if not await problem_exists(ctx, problem_name):
+                return
+        current_problem[ctx.author.id] = problem_name
+        if problem_name:
+            await ctx.send('Problem successfully set.')
+        else:
+            await ctx.send('The bot will no longer check your submissions.')
 
     @commands.command()
     async def listprobs(self, ctx):

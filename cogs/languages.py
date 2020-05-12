@@ -1,25 +1,39 @@
 from discord.ext import commands
 from print_queue import send_message
 from threading import Thread
-from utils import (search_between, get_log_filename, get_code)
+from utils import (search_between, get_log_filename, get_code, stats)
 import datetime
 import aiofiles
 import judge0api as api
-from inputs import inputs
+from cogs.problems import current_problem, get_problem, get_current_problem
+from utils import LimitedSizeDict
+
+inputs = LimitedSizeDict(size_limit=1000)
 
 client = api.Client("http://127.0.0.1")
 
+def set_input(key, val):
+    inputs[key] = val
 
-def run_code(args, message_id, channel_id, input_data, attachment, lang_id):
-    if attachment:
-        code = attachment
-    else:
-        code = get_code(args).encode()
+def test_code(arg, attachment, lang_id, problem_name, channel_id):
+    code = get_code(arg, attachment)
+    print('Running test code: ', code.decode())
+    cases = get_problem(problem_name).cases
+    message = ''
+    for stdin in cases:
+        expected_output = cases[stdin]
+        submission = api.submission.submit(client, code, lang_id,
+            stdin=stdin.encode(), expected_output=expected_output.encode())
+        status = submission.status
+        message += 'Status: ' + status['description'] + '\n'
+        message += stats(submission.time, submission.memory)
+    send_message(channel_id, message)
+
+
+
+def run_code(arg, input_data, attachment, lang_id, channel_id):
+    code = get_code(arg, attachment)
     print('Running code: ', code.decode())
-    log_filename = get_log_filename(message_id)
-    with open(log_filename, 'a') as log_file:
-        log_file.write('Code: ' + code.decode() + '\n')
-        log_file.write('Input: ' + input_data + '\n')
     submission = api.submission.submit(client, code, lang_id,
         stdin=input_data.encode())
     status = submission.status
@@ -44,9 +58,8 @@ def run_code(args, message_id, channel_id, input_data, attachment, lang_id):
     if compile_output:
         message += ('Compiler output: ```\n' + compile_output
             + '\n```\n')
-    if submission.time and submission.memory:
-        message += ('CPU time: ' + str(submission.time) + ' s, '
-            + 'Memory usage: ' + str(submission.memory) + ' kB')
+
+    message += stats(submission.time, submission.memory)
     send_message(channel_id, message)
 
 class Languages(commands.Cog):
@@ -54,25 +67,29 @@ class Languages(commands.Cog):
         self.bot = bot
 
     async def code_command(self, ctx, arg, lang_id):
-        author_id = str(ctx.message.author.id)
-        if author_id in inputs:
-            input_data = inputs[author_id]
-        else:
-            input_data = ''
-        message_id = str(ctx.message.id)
+        author_id = ctx.author.id
+        problem_name = get_current_problem(author_id)
         channel_id = ctx.message.channel.id
-        async with aiofiles.open(get_log_filename(message_id), 'a') as log_file:
-            await log_file.write(str(datetime.datetime.now()) + '\n')
-            await log_file.write(author_id + ' ' + message_id + ' '
-                + str(channel_id) + '\n')
 
         if ctx.message.attachments:
             attachment = await ctx.message.attachments[0].read()
         else:
             attachment = None
 
-        thread = Thread(target=run_code, args=(arg[1:],
-            message_id, channel_id, input_data, attachment, lang_id))
+        # Remove the space after the command.
+        arg = arg[1:]
+
+        if problem_name:
+            thread = Thread(target=test_code, args=(arg, attachment, lang_id,
+            problem_name, channel_id))
+        else:
+            if author_id in inputs:
+                input_data = inputs[author_id]
+            else:
+                input_data = ''
+
+            thread = Thread(target=run_code, args=(arg,
+                input_data, attachment, lang_id, channel_id))
         thread.start()
 
     @commands.command(rest_is_raw=True)

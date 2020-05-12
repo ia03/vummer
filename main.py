@@ -4,11 +4,10 @@ import discord
 import re
 from discord.ext import commands, tasks
 from print_queue import pop_message
-from cogs.languages import Languages
+from cogs.languages import Languages, set_input
 from cogs.problems import Problems, read_problems
 from discord import Game
 from discord.utils import escape_mentions, oauth_url
-from inputs import inputs
 
 bot = commands.Bot(command_prefix='$')
 
@@ -47,7 +46,7 @@ async def setinput(ctx):
         data = search_between(args, '```', '```')
     else:
         data = args
-    inputs[str(ctx.message.author.id)] = data
+    set_input(ctx.author.id, data)
     if data:
         message = 'Input set: ```\n' + data + '\n```'
         await ctx.send(message)

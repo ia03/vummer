@@ -23,9 +23,22 @@ def search_between(content, start, end):
 def get_log_filename(container_name):
     return 'logs/' + container_name + '.log'
 
-def get_code(args):
-    if '```' in args:
-        code = search_between(args, '```', '```')
+def get_code_from_text(arg):
+    if '```' in arg:
+        code = search_between(arg, '```', '```')
     else:
-        code = args
+        code = arg
     return code
+
+def get_code(arg, attachment):
+    if attachment:
+        return attachment
+    else:
+        return get_code_from_text(arg).encode()
+
+def stats(sub_time, sub_mem):
+    if sub_time and sub_mem:
+        return ('CPU time: ' + str(sub_time) + ' s, '
+            + 'Memory usage: ' + str(sub_mem) + ' kB\n')
+    else:
+        return ''
