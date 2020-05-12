@@ -32,22 +32,22 @@ def run_code(args, message_id, channel_id, input_data, attachment, lang_id):
         errors = errors.decode()
     if compile_output:
         compile_output = compile_output.decode()
-    send_message(channel_id, 'Status: ' + status['description'])
+
+    message = 'Status: ' + status['description'] + '\n'
 
     if output:
-        send_message(channel_id, 'Output: ```\n' + output
-            + '\n```')
+        message += 'Output: ```\n' + output + '\n```'
     else:
-        send_message(channel_id, 'No output sent.')
+        message += 'No output sent.\n'
     if errors:
-        send_message(channel_id,
-            'Errors: ```\n' + errors + '\n```')
+        message += 'Errors: ```\n' + errors + '\n```\n'
     if compile_output:
-        send_message(channel_id, 'Compiler output: ```\n' + compile_output
-            + '\n```')
+        message += ('Compiler output: ```\n' + compile_output
+            + '\n```\n')
     if submission.time and submission.memory:
-        send_message(channel_id, 'CPU time: ' + str(submission.time) + ' s, '
+        message += ('CPU time: ' + str(submission.time) + ' s, '
             + 'Memory usage: ' + str(submission.memory) + ' kB')
+    send_message(channel_id, message)
 
 class Languages(commands.Cog):
     def __init__(self, bot):
