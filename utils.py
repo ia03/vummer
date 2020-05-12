@@ -1,6 +1,6 @@
 import time
 from collections import OrderedDict
-from judge0api.status import Judge0Status
+from json import JSONEncoder
 
 class LimitedSizeDict(OrderedDict):
     def __init__(self, *args, **kwds):

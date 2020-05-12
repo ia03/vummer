@@ -5,6 +5,7 @@ import re
 from discord.ext import commands, tasks
 from print_queue import pop_message
 from cogs.languages import Languages
+from cogs.problems import Problems, read_problems
 from discord import Game
 from discord.utils import escape_mentions, oauth_url
 from inputs import inputs
@@ -60,7 +61,9 @@ async def invite(ctx):
 
 def main():
     check_print_queue.start()
+    read_problems()
     bot.add_cog(Languages(bot))
+    bot.add_cog(Problems(bot))
     bot.run(config.token)
 
 if __name__ == '__main__':
