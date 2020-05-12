@@ -6,6 +6,7 @@ from discord.ext import commands, tasks
 from print_queue import pop_message
 from cogs.languages import Languages, set_input
 from cogs.problems import Problems, read_problems
+from utils import search_between
 from discord import Game
 from discord.utils import escape_mentions, oauth_url
 
