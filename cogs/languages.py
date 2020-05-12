@@ -40,7 +40,7 @@ def run_code(args, message_id, channel_id, input_data, attachment, lang_id):
     else:
         message += 'No output sent.\n'
     if errors:
-        message += 'Errors: ```\n' + errors + '\n```\n'
+        message += 'Errors: ```\n' + errors + '\n```'
     if compile_output:
         message += ('Compiler output: ```\n' + compile_output
             + '\n```\n')
