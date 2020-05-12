@@ -129,7 +129,7 @@ class Problems(commands.Cog):
         '''Deletes a problem case. Only available to the bot owner.'''
         if not await problem_exists(ctx, problem_name):
             return
-        if arg not in problems[problen_name].cases:
+        if arg not in problems[problem_name].cases:
             await ctx.send('The specified case does not exist.')
         del problems[problem_name].cases[arg]
         await ctx.send('Case deleted.')
