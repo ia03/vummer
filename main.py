@@ -35,18 +35,16 @@ async def check_print_queue():
         pass
 
 @bot.command()
-async def setinput(ctx):
+async def setinput(ctx, *, stdin):
     """Sets the input that is to be passed to code you run.
     You can set multiple lines of input.
     Using the command without an argument clears the input.
-    Usage: $setinput [input]
     """
-    args = ctx.message.content[10:]
-    print('Setting input:', args)
-    if '```' in args:
-        data = search_between(args, '```', '```')
+    print('Setting input:', stdin)
+    if '```' in stdin:
+        data = search_between(stdin, '```', '```')
     else:
-        data = args
+        data = stdin
     set_input(ctx.author.id, data)
     if data:
         message = 'Input set: ```\n' + data + '\n```'
