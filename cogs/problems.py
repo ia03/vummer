@@ -63,7 +63,7 @@ class Problems(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def addprob(self, ctx, problem_name):
-        '''Adds a problem. Only available to the bot owner.'''
+        """Adds a problem. Only available to the bot owner."""
         if problem_name in problems:
             await ctx.send('Problem ' + problem_name + ' already exists.')
             return
@@ -74,7 +74,7 @@ class Problems(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def delprob(self, ctx, problem_name):
-        '''Deletes a problem. Only available to the bot owner'''
+        """Deletes a problem. Only available to the bot owner"""
         if not await problem_exists(ctx, problem_name):
             return
         del problems[problem_name]
@@ -84,7 +84,7 @@ class Problems(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def setprobdetails(self, ctx, problem_name, *, arg):
-        '''Sets a problem's details. Only available to the bot owner.'''
+        """Sets a problem's details. Only available to the bot owner."""
         if not await problem_exists(ctx, problem_name):
             return
         problems[problem_name].details = arg
@@ -93,7 +93,7 @@ class Problems(commands.Cog):
 
     @commands.command()
     async def prob(self, ctx, problem_name):
-        '''Retrieves information about a problem.'''
+        """Retrieves information about a problem."""
         if not await problem_exists(ctx, problem_name):
             return
         text = 'Problem details:```\n'
@@ -104,7 +104,7 @@ class Problems(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def clearcases(self, ctx, problem_name):
-        '''Clears a problem's cases. Only available to the bot owner.'''
+        """Clears a problem's cases. Only available to the bot owner."""
         if not await problem_exists(ctx, problem_name):
             return
         problems[problem_name].cases = {}
@@ -114,7 +114,7 @@ class Problems(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def addcase(self, ctx, problem_name, *, arg):
-        '''Adds a problem case. Only available to the bot owner.'''
+        """Adds a problem case. Only available to the bot owner."""
         if not await problem_exists(ctx, problem_name):
             return
         list = arg.split('|')
@@ -130,7 +130,7 @@ class Problems(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def delcase(self, ctx, problem_name, *, arg):
-        '''Deletes a problem case. Only available to the bot owner.'''
+        """Deletes a problem case. Only available to the bot owner."""
         if not await problem_exists(ctx, problem_name):
             return
         if arg not in problems[problem_name].cases:
@@ -142,7 +142,7 @@ class Problems(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def listcases(self, ctx, problem_name):
-        '''Lists a problem's cases. Only available to the bot owner.'''
+        """Lists a problem's cases. Only available to the bot owner."""
         if not await problem_exists(ctx, problem_name):
             return
         cases = problems[problem_name].cases
@@ -158,9 +158,9 @@ class Problems(commands.Cog):
 
     @commands.command()
     async def setprob(self, ctx, problem_name=None):
-        '''Uses future code submissions as answers to the specific problem.
+        """Uses future code submissions as answers to the specific problem.
         Using this command without a problem name makes the bot stop checking
-        your submissions against the specified problem.'''
+        your submissions against the specified problem."""
         if problem_name:
             if not await problem_exists(ctx, problem_name):
                 return
@@ -172,7 +172,7 @@ class Problems(commands.Cog):
 
     @commands.command()
     async def listprobs(self, ctx):
-        '''Lists available problems.'''
+        """Lists available problems."""
         if not problems:
             await ctx.send('No problems were found.')
             return

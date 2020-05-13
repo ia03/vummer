@@ -57,6 +57,16 @@ async def invite(ctx):
     """Sends the bot invite link."""
     await ctx.send(oauth_url(bot.user.id))
 
+@bot.command()
+@commands.is_owner()
+async def guilds(ctx):
+    """Lists the guilds the bot is in. Only available to the bot owner."""
+    message = 'Guilds the bot is in:```\n'
+    for guild in bot.guilds:
+        message += guild.name + '\n'
+    message += '```'
+    await ctx.send(message)
+
 def main():
     check_print_queue.start()
     read_problems()
