@@ -157,7 +157,7 @@ class Problems(commands.Cog):
         await ctx.send(message)
 
     @commands.command()
-    async def doprob(self, ctx, problem_name=None):
+    async def setprob(self, ctx, problem_name=None):
         '''Uses future code submissions as answers to the specific problem.
         Using this command without a problem name makes the bot stop checking
         your submissions against the specified problem.'''
