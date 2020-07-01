@@ -68,6 +68,7 @@ class Problems(commands.Cog):
             await ctx.send('Problem ' + problem_name + ' already exists.')
             return
         problems[problem_name] = Problem()
+        problems[problem_name].cases = {}
         await ctx.send('Problem ' + problem_name + ' successfully added.')
         await write_problems()
 
