@@ -30,6 +30,7 @@ def read_problems():
     for problem_name in list:
         problems[problem_name] = Problem()
         problems[problem_name].details = list[problem_name]['details']
+        problems[problem_name].cases = {}
         for input in list[problem_name]['cases']:
             problems[problem_name].cases[input] = (list[problem_name]['cases']
                 [input])
