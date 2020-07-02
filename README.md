@@ -1,6 +1,6 @@
 # Vummer
 
-Vummer is a Discord bot that can run and judge Python scripts using [Judge0.](https://github.com/judge0/api) Check out the Discord server
+Vummer is a Discord bot that can run and judge code using [Judge0.](https://github.com/judge0/api) Check out the Discord server
 [here.](https://discord.gg/2NGbScj)
 
 ## Install
